@@ -46,8 +46,8 @@ class AuthController extends Controller
      }
 
      public function me()
-     {
-          return response()->json(auth()->user());
+     {    
+          return $this->successResponse(auth()->user());
      }
 
      public function logout()
