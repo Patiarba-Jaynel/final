@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Model\User;
+use App\Traits\ApiResponser;
 
 class AuthController extends Controller
 {
+     use ApiResponser;
     /**
      * Create a new controller instance.
      *
@@ -28,7 +30,7 @@ class AuthController extends Controller
      public function login(Request $request)
      {
           $validation = [
-               'email' => 'required | string',
+               'email' => 'required | email',
                'password' => 'required | string' 
           ];
 
@@ -37,7 +39,7 @@ class AuthController extends Controller
           $credentials = $request->only(['email', 'password']);
 
           if (! $token = Auth::attempt($credentials)) {
-               return response()->json(['message' => 'Unauthorized'], 401);
+               return $this->errorResponse("invalid email or password", 403);
           }
 
           return $this->respondWithToken($token);
