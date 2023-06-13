@@ -14,24 +14,10 @@
 */
 
 $router->get('/', function () use ($router) {
-    echo "<center><h1>Nothing to see here.</h1></center>";
     return $router->app->version();
 });
 
-Route::group([
 
-    'prefix' => 'api'
-
-], function ($router) {
-    Route::post('login', 'AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::get('user-profile', 'AuthController@me');
-    Route::post('create', 'userController@register');
-
-    Route::get('hello', 'userController@hello');
+$router->group(['prefix' => 'v1'], function($router) {
+    $router->post('/chat', 'gptController@chat');
 });
-
-
-// chatgpt Integration
-

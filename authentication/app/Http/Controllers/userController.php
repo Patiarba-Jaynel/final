@@ -16,14 +16,16 @@ class userController extends Controller
      */
     public function __construct()
     {
+     $this->middleware('auth:api', ['except' => ['login', 'refresh', 'logout']]);
     }
+
 
     public function register(Request $request) 
     {
          $validation = [
               'name' => 'required| string',
               'email' => 'required | email| unique:users',
-              'password' => 'required | string' 
+              'password' => 'required | string'
          ];
 
          $this->validate($request, $validation);
