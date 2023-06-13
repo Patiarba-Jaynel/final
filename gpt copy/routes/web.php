@@ -16,3 +16,8 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+
+$router->group(['prefix' => 'v1'], function($router) {
+    $router->post('/chat', 'gptController@chat');
+});
