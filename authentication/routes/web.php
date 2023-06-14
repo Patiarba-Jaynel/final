@@ -34,6 +34,7 @@ Route::group([
 
 $router->group(['prefix' => 'api/v1'], function($router) {
     $router->post('/payment', 'paymongoController@pay');
+    $router->post('/chat', 'gptController@chat');
 });
 
 
