@@ -32,6 +32,10 @@ Route::group([
     Route::get('hello', 'userController@hello');
 });
 
+$router->group(['prefix' => 'api/v1'], function($router) {
+    $router->post('/payment', 'paymongoController@pay');
+});
+
 
 // chatgpt Integration
 

@@ -48,6 +48,11 @@ $app->singleton(
     App\Console\Kernel::class
 );
 
+
+$app->middleware([
+    App\Http\Middleware\AuthenticateAccess::class
+]);
+
 /*
 |--------------------------------------------------------------------------
 | Register Config Files
