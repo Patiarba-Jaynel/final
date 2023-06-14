@@ -10,6 +10,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
+use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
@@ -87,6 +88,11 @@ class Handler extends ExceptionHandler
 
         // unauthorized access
         if ($exception instanceof AuthenticationException) 
+        {
+            return $this->errorResponse($exception->getMessage(), Response::HTTP_UNAUTHORIZED);
+        }
+
+        if ($exception instanceof ClientException) 
         {
             return $this->errorResponse($exception->getMessage(), Response::HTTP_UNAUTHORIZED);
         }

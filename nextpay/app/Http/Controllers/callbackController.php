@@ -52,11 +52,9 @@ class callbackController extends Controller
 
      $urlRequest = $this->performRequeststatusCode("GET",$url, null, $headers);
 
-     $user = User::where('email', $email)->firstOrFail();
+     $currentUserToken = User::where('email', $email)->firstOrFail()->tokens;
 
-     $user->fill(
-          ["tokens" => $tokens / 100]
-     );
+     $user = User::where('email', $email)->limit(1)->update(array("tokens" => ($tokens / 100) + $currentUserToken));
 
      return $this->successResponse($user);
 
