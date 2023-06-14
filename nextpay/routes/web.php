@@ -19,5 +19,6 @@ $router->get('/', function () use ($router) {
 
 
 $router->group(['prefix' => 'v1'], function($router) {
-    $router->post('/chat', 'gptController@chat');
+    $router->post('/payment', 'paymongoController@payment');
+    $router->post('/payment/callback', 'callbackController@callback');
 });

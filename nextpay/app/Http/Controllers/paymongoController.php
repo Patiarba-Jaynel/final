@@ -7,7 +7,7 @@ use Illuminate\Http\Response;
 use App\Traits\ApiResponser;
 
 
-class gptController extends Controller
+class paymongoController extends Controller
 {
     use ConsumesExternalService;
     use ApiResponser;
@@ -22,19 +22,20 @@ class gptController extends Controller
 
     public function __construct()
     {
-        $this->baseUri = "https://api.openai.com";
+        $this->baseUri = config('services.URL.url');
     }
 
-    
-    public function chat(Request $request)
+
+    public function payment(Request $request)
     {   
-        $API_KEY = config('services.API_KEY.key');
+        $API_KEY = base64_encode(config('services.API_KEY.key'));
 
         $headers = [
-            "Authorization" => "Bearer"." ".$API_KEY,
+            "Authorization" => "Basic"." ".$API_KEY,
             'content-type' => 'application/json'
         ];
 
+        /*
         $message = [
             "role" => "user",
             "content" => request("messages")
@@ -46,18 +47,27 @@ class gptController extends Controller
                 $message
             ]
         ];
+        */
+        $email = request("email");
+
+        $data = '{"data":{"attributes":{"billing":{"email":"'.$email.'"},"line_items":[{"currency":"PHP","amount":10000,"description":"PAYMENT","name":"GPT SUBSCRIPTION","quantity":1}],"payment_method_types":["gcash"],"send_email_receipt":false,"show_description":true,"show_line_items":true,"description":"dsad"}}}';
+
+
+
 
         $validation = [
-            "messages" => "required | string"
+            "email" => "required | email"
         ];
 
         $this->validate($request, $validation);
 
-        $urlRequest = $this->performRequest("POST", "/v1/chat/completions",  json_encode($data), $headers);
 
 
+        $urlRequest = $this->performRequest("POST", "/v1/checkout_sessions",  $data, $headers);
+
+        
         $response = [
-            "messages" => json_decode($urlRequest)->choices[0]->message->content
+            "checkout_url" => json_decode($urlRequest)->data->attributes->checkout_url
         ];
 
         return $this->successResponse($response);
