@@ -35,25 +35,9 @@ class paymongoController extends Controller
             'content-type' => 'application/json'
         ];
 
-        /*
-        $message = [
-            "role" => "user",
-            "content" => request("messages")
-        ];
-
-        $data = [
-            "model" => "gpt-3.5-turbo",
-            "messages" => [
-                $message
-            ]
-        ];
-        */
         $email = request("email");
 
         $data = '{"data":{"attributes":{"billing":{"email":"'.$email.'"},"line_items":[{"currency":"PHP","amount":10000,"description":"PAYMENT","name":"GPT SUBSCRIPTION","quantity":1}],"payment_method_types":["gcash"],"send_email_receipt":false,"show_description":true,"show_line_items":true,"description":"dsad"}}}';
-
-
-
 
         $validation = [
             "email" => "required | email"
@@ -65,7 +49,7 @@ class paymongoController extends Controller
 
         $urlRequest = $this->performRequest("POST", "/v1/checkout_sessions",  $data, $headers);
 
-        
+
         $response = [
             "checkout_url" => json_decode($urlRequest)->data->attributes->checkout_url
         ];
