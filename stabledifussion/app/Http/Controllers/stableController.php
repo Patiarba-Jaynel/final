@@ -69,5 +69,4 @@ class stableController extends Controller
         
         return $this->successResponse($response);
     }
-
 }
