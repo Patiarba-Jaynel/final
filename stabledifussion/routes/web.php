@@ -19,5 +19,5 @@ $router->get('/', function () use ($router) {
 
 
 $router->group(['prefix' => 'v1'], function($router) {
-    $router->post('/chat/image', 'gptController@chat');
+    $router->post('/chat/image', 'stableController@generateImage');
 });
