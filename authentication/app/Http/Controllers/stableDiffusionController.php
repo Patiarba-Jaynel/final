@@ -9,7 +9,7 @@ use App\Services\dalleService;
 use App\Models\Token;
 
 
-class dalleController extends Controller
+class stableDiffusionController extends Controller
 {
      use ApiResponser;
 
@@ -24,6 +24,11 @@ class dalleController extends Controller
      public function prompt(Request $request)
      {    
           $token = auth()->user()->tokens;
+
+
+          $validation = ["prompt" => "required | string"];
+
+          $this->validate($request, $validation);
 
           if ($token > 0)
           {

@@ -28,14 +28,13 @@ Route::group([
     Route::post('refresh', 'AuthController@refresh');
     Route::get('user-profile', 'AuthController@me');
     Route::post('create', 'userController@register');
-
     Route::get('hello', 'userController@hello');
 });
 
 $router->group(['prefix' => 'api/v1'], function($router) {
     $router->post('/payment', 'paymongoController@pay');
     $router->post('/chat', 'gptController@chat');
-    $router->post('/image', 'dalleController@prompt');
+    $router->post('/image', 'stableDiffusionController@prompt');
 });
 
 

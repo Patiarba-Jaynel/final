@@ -24,6 +24,10 @@ class gptController extends Controller
      public function chat(Request $request)
      {    
           $token = auth()->user()->tokens;
+          
+          $validation = ["messages" => "required | string"];
+
+          $this->validate($request, $validation);
 
           if ($token > 0)
           {
