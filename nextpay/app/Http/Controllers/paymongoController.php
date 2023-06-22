@@ -46,7 +46,6 @@ class paymongoController extends Controller
         $this->validate($request, $validation);
 
 
-
         $urlRequest = $this->performRequest("POST", "/v1/checkout_sessions",  $data, $headers);
 
 

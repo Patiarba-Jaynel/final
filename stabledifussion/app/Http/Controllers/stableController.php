@@ -64,7 +64,7 @@ class stableController extends Controller
 
         
         $response = [
-            "image" => json_decode($urlRequest)->output[0]
+            "image" => json_decode($urlRequest)->output
         ];
         
         return $this->successResponse($response);
