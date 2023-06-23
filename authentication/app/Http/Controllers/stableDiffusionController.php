@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use App\Traits\ApiResponser;
 use App\Services\dalleService;
 use App\Models\Token;
+use App\Models\History;
 
 
 class stableDiffusionController extends Controller
@@ -25,15 +26,24 @@ class stableDiffusionController extends Controller
      {    
           $token = auth()->user()->tokens;
 
-
+          $user_id = auth()->user()->id;
           $validation = ["prompt" => "required | string"];
 
           $this->validate($request, $validation);
 
           if ($token > 0)
           {
+               $prompt = json_decode($this->dalleService->prompt($request->all()), true)["image"][0];
+
                Token::where('id', auth()->user()->id)->limit(1)->update(array("tokens" => $token - 1));
-               return $this->successResponse($this->dalleService->prompt($request->all()));
+
+               History::create([
+                    "ask" => request("prompt"),
+                    "response" => $prompt,
+                    "user_id" => $user_id
+               ]);
+
+               return $this->successResponse(["image" => $prompt]);
           }
 
           return $this->errorResponse("No account tokens", 403);
